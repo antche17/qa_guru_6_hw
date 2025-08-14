@@ -28,8 +28,8 @@ def test_dark_theme_by_time_and_user_choice():
     if dark_theme_enabled_by_user == True:
         is_dark_theme = True
         print("Темная тема включена в ручную")
-    elif dark_theme_enabled_by_user - None:
-        if current_time.hour < 22 or current_time.hour > 6:
+    elif dark_theme_enabled_by_user == None:
+        if current_time.hour >= 22 or current_time.hour < 6:
             is_dark_theme = False
             print("Темная тема выключена")
         else:
@@ -55,17 +55,19 @@ def test_find_suitable_user():
     ]
 
     # TODO найдите пользователя с именем "Olga"
-    for suitable_users in users:
-        if suitable_users['name'] == "Olga":
-            print(suitable_users)
-    suitable_users = None
-    assert suitable_users == {"name": "Olga", "age": 45}
+    suitable_user = None
+    for user in users:
+        if user['name'] == "Olga":
+            suitable_user = user
+            print(suitable_user)
+    assert suitable_user == {"name": "Olga", "age": 45}
 
     # TODO найдите всех пользователей младше 20 лет
-    for suitable_users in users:
-        if suitable_users['age'] < 20:
-            print(suitable_users)
-    suitable_users = None
+    suitable_users = []
+    for user in users:
+        if user['age'] < 20:
+            suitable_users.append(user)
+            print(user)
     assert suitable_users == [
         {"name": "Stanislav", "age": 15},
         {"name": "Maria", "age": 18},
@@ -83,16 +85,11 @@ def test_find_suitable_user():
 # "Open Browser [Chrome]"
 
 
-def print_function_name_and_args(func, *args):  # функция принимает имя функции и значения аргументов
-    func_name = func.__name__.replace('_',
-                                      ' ').title()  # получаем имя функции и преобразуем его в читаемый вид (заменяем символ подчеркивания на пробел, делаем первую букву заглавной)
-    args_name = ", ".join([*args])  # преобразуем значения аргументов в строку
-    print(f"{func_name} [{args_name}]")  # печатаем имя функции и значения аргументов
-    return f"{func_name} [{args_name}]"  # возвращаем строку с именем функции и значениями аргументов
-
-
-def open_browser(browser_name):
-    print_function_name_and_args(open_browser, browser_name)
+def print_function_name_and_args(func, *args):
+    func_name = func.__name__.replace('_', ' ').title()
+    args_name = ', '.join(map(str, args))
+    print(f'{func_name} [{args_name}]')
+    return f'{func_name} [{args_name}]'
 
 
 def test_readable_function():
@@ -102,7 +99,6 @@ def test_readable_function():
 
 
 def open_browser(browser_name):
-    print_function_name_and_args(open_browser, browser_name)
     actual_result = print_function_name_and_args(open_browser, browser_name)
     assert actual_result == "Open Browser [Chrome]"
 
